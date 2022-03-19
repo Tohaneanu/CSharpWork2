@@ -12,6 +12,22 @@ public class Program
         foreach (var client in clients.Where(c => DateTime.Now.Year - c.BirthYear > 40)) Console.WriteLine(client);
     }
 
+    public static bool Minors(IEnumerable<Client> clients)
+    {
+        return clients.Any(c=>DateTime.Now.Year - c.BirthYear < 19);
+    }
+    public static bool Duplicate(IEnumerable<Client> clients)
+    {
+        var enumerable = clients.ToList();
+        var aux = enumerable.ToHashSet();
+        return aux.Count - clients.Count()!=0;
+    }
+
+    public static IEnumerable<Client> RemoveDuplicates(IEnumerable<Client> clients)
+    {
+        return clients.Distinct();
+    }
+
     public static void Main(string[] args)
     {
         IEnumerable<Client> clients = new List<Client>()
@@ -47,5 +63,25 @@ public class Program
         Display(result1);
         Console.WriteLine("Order:");
         Display(clients.OrderBy(c => c.LastName.Length).ThenByDescending(c => c.BirthYear));
+        Console.WriteLine("Order2:");
+        Display(clients.OrderBy(c=>c.FirstName).ThenBy(c=>c.LastName));
+        Console.WriteLine($"$Minors: {Minors(clients2)}");
+        Console.WriteLine($"$Duplicate: {Duplicate(clients2)}");
+        IEnumerable<Client> clients3 = new List<Client>()
+        {
+            new Client() {Id = 9, FirstName = "Anaaaa", LastName = "Popescuuuu", BirthYear = 1964},
+            new Client() {Id = 9, FirstName = "Anaaaa", LastName = "Popescuuuu", BirthYear = 1964},
+            new Client() {Id = 10, FirstName = "aaaa", LastName = "Raduuuu", BirthYear = 1954},
+            new Client() {Id = 11, FirstName = "Mariusssss", LastName = "Paunnnn", BirthYear = 2000},
+            new Client() {Id = 12, FirstName = "Flaviaaa", LastName = "Dumitrescuuu", BirthYear = 2001},
+            new Client() {Id = 13, FirstName = "Ioannnn", LastName = "Vasilescuuuu", BirthYear = 1934},
+            new Client() {Id = 8, FirstName = "Flavia", LastName = " Dumitrescu ", BirthYear = 1993}
+        };
+        Console.WriteLine($"$Duplicate test 2: {Duplicate(clients3)}");
+        Console.WriteLine("Remove duplicates:");
+        var distinct = RemoveDuplicates(clients3);
+        Display(distinct);
+
+
     }
 }

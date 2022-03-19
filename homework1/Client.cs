@@ -1,6 +1,6 @@
 namespace homework1;
 
-public class Client
+public class Client :IComparable
 {
     public int Id { get; set; }
     public string FirstName { get; set; }
@@ -11,6 +11,12 @@ public class Client
     {
         return $"Client id: {this.Id}, name: {this.FirstName + " " + this.LastName}, birth year: {this.BirthYear}";
     }
+
+    public int CompareTo(object? obj)
+    {
+        return this.GetHashCode() - obj.GetHashCode();
+    }
+
 
     public override bool Equals(object? obj)
     {
